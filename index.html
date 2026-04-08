@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q4 Drill 2 - Heat Index</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0d0c29, #0d99ea, #24243e);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            color: #00d2ff;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .instruction-area {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-top: 15px;
+            color: #00d2ff;
+        }
+
+        .form-control {
+            background: rgba(148, 19, 19, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .form-control:focus {
+            background: rgba(247, 223, 4, 0.1);
+            color: white;
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn-calculate {
+            background: linear-gradient(to right, #00d2ff, #f6c902);
+            border: none;
+            color: rgb(11, 212, 223);
+            font-weight: bold;
+            margin-top: 25px;
+            padding: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-calculate:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+        }
+
+        
+        #resultBox {
+            display: none; 
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(215, 250, 20, 0.15);
+            border: 1px solid #f73e3e;
+            text-align: center;
+        }
+
+        .status-highlight {
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <h2>Heat Index Checker</h2>
+
+        <details ontoggle="console.log('Instructions Opened')">
+            <summary style="cursor: pointer; color: #2c5dff;">View Instructions</summary>
+            <div class="instruction-area">
+                <p>Please enter the air temperature in Celsius and the relative humidity percentage.</p>
+            </div>
+        </details>
+
+        <div class="mt-3">
+            <label class="form-label">Temperature (°C)</label>
+            <input type="number" id="tempInput" class="form-control" placeholder="Enter degrees...">
+            
+            <label class="form-label">Humidity (%)</label>
+            <input type="number" id="humidityInput" class="form-control" placeholder="Enter percentage...">
+            
+            <button onclick="calculateHeatIndex()" class="btn btn-calculate w-100">CHECK STATUS</button>
+        </div>
+
+        <div id="resultBox">
+            <span id="indexOutput"></span><br>
+            <span id="statusOutput" class="status-highlight"></span>
+        </div>
+
+    
+    <script>
+        
+        function calculateHeatIndex() {
+            let temp = parseFloat(document.getElementById('tempInput').value);
+            let hum = parseFloat(document.getElementById('humidityInput').value);
+
+          
+            if (isNaN(temp) || isNaN(hum)) {
+                alert("Please fill in both fields with numbers.");
+                return;
+            }
+
+            
+            let heatIndex = temp + (0.33 * hum) - 4;
+            let status = "";
+
+            switch (true) {
+                case (heatIndex >= 42):
+                    status = "Extreme Heat / Danger";
+                    break;
+                case (heatIndex >= 38):
+                    status = "Very Hot / Caution";
+                    break;
+                case (heatIndex >= 33):
+                    status = "Hot";
+                    break;
+                case (heatIndex >= 28):
+                    status = "Warm";
+                    break;
+                default:
+                    status = "Comfortable / Cool";
+            }
+
+            
+            const resultBox = document.getElementById('resultBox');
+            document.getElementById('indexOutput').innerHTML = "Calculated Heat Index: <b>" + heatIndex.toFixed(1) + "°C</b>";
+            document.getElementById('statusOutput').innerHTML = status;
+            
+            // Show the hidden result box
+            resultBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
